@@ -7,30 +7,17 @@ def custom_write(file_name, strings):
 Возвращать словарь strings_positions, где ключом будет кортеж (<номер строки>, <байт начала строки>), а
 значением - записываемая строка. Для получения номера байта начала строки используйте метод tell() перед записью.
     """
-    name = 'test.txt'
-    for i in info:
-        file = open(name, 'a')
-        file.write(i + '\n')
-        # pprint(file.read())
-        # file.close()
+    file = open(file_name, 'a', encoding='utf-8')  # стараться открывать один раз для всего кода
+    number_of_str = 0
     strings_positions = {}
-    number_of_str = 0  # счётчик для строк
-    file = open(file_name, 'r')
-    file.tell()
-    #print(file.tell())
-    file.readline()
-    number_of_str += 1
-    #print(file.tell())
-
-    for key in file_name:
-        if key not in strings_positions:
-            strings_positions[key] = (number_of_str, file.tell())
-            break
-        for value in file_name:
-            strings_positions[key] = file.readline()
-
-            return strings_positions
+    for i in strings:
+        number_of_str += 1  # номер строки
+        nb = file.tell()  # номер байта, сохраняем в переменную
+        strings_positions[(number_of_str, nb)] = i
+        file.write(i + '\n')
     file.close()
+    return strings_positions
+
 
 info = [
     'Text for tell.',
@@ -43,11 +30,3 @@ result = custom_write('test.txt', info)
 for elem in result.items():
     print(elem)
 
-# def custom_write(file_name, strings):
-#
-#     name = 'test.txt'
-#     for i in info:
-#         file = open(name, 'a')
-#         file.write(i + '\n')
-#         #pprint(file.read())
-#         file.close()
